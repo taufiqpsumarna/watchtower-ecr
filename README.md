@@ -25,9 +25,13 @@ services:
     image: ottolini/watchtower-ecr:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /path/to/docker-config.json:/config.json
     environment:
       AWS_ACCESS_KEY_ID: <ACCESS_KEY_ID>
       AWS_SECRET_ACCESS_KEY: <SECRET_ACCESS_KEY>
     command: --interval 300 --cleanup
 ```
+
+Both the single `docker run` and `docker-compose` can have the default config.json overridden to use a different authentication method for ECR. Refer to https://github.com/awslabs/amazon-ecr-credential-helper#aws-credentials for more info about it.
+What you need to add is a new volume that map an existing config.json over the default one:
+
+      - /path/to/docker-config.json:/config.json
