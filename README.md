@@ -6,6 +6,28 @@ Project Repository [taufiqpsumarna/watchtower-ecr](https://github.com/taufiqpsum
 [![Docker Stars](https://img.shields.io/docker/stars/taufiq14s/watchtower-ecr.svg?style=flat-square)](https://hub.docker.com/r/taufiq14s/watchtower-ecr/)
 
 ## Usage
+
+### Build Docker Image (optional)
+Installation based on [Amazon ECR Credential Helper installation from source](https://github.com/awslabs/amazon-ecr-credential-helper?tab=readme-ov-file#from-source) and [containrrr/watchtower](https://github.com/containrrr/watchtower/) docker image
+
+```yaml
+FROM alpine:3.20.3 AS build
+
+# https://github.com/awslabs/amazon-ecr-credential-helper#installing
+RUN apk add --no-cache libc6-compat gcc g++ git go
+RUN export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin
+RUN go install github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login@latest
+
+# Final image has to be alpine, scratch doesn't support our env vars or credentials file
+FROM alpine:3.20.3
+COPY --from=containrrr/watchtower:latest / /
+COPY --from=build /root/go/bin/docker-credential-ecr-login /bin/docker-credential-ecr-login
+COPY ./docker/config.json /config.json
+
+ENTRYPOINT ["/watchtower"]
+```
+### Docker Run
+
 Run the container with the following command:
 ```bash
 docker run -d \
@@ -17,7 +39,9 @@ docker run -d \
   taufiq14s/watchtower-ecr:latest --interval 300 --cleanup
 ```
 
+### Docker Compose
 If you prefer, you can use the [docker-compose.yml file](./docker-compose.yml) then update your .env file
+
 ```bash
 cp .env.example .env
 nano .env
