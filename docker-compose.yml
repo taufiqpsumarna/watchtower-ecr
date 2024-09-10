@@ -7,6 +7,5 @@ services:
     image: taufiq14s/watchtower-ecr:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./docker/config.json:/config.json
     env_file:
       - .env
