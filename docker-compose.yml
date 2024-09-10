@@ -7,7 +7,6 @@ services:
     image: taufiq14s/watchtower-ecr:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./docker/config.json:/config.json
+      - ${HOME}/.aws:/.aws #AWS CLI Config
     env_file:
       - .env
-    command: --interval 300 --cleanup
