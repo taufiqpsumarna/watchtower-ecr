@@ -10,4 +10,3 @@ services:
       - ./docker/config.json:/config.json
     env_file:
       - .env
-    command: --interval 300 --cleanup
