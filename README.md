@@ -1,8 +1,9 @@
 # WatchTower ECR
 A docker image based on [containrrr/watchtower](https://github.com/containrrr/watchtower/) for use with AWS ECR.
+Project Repository [taufiqpsumarna/watchtower-ecr](https://github.com/taufiqpsumarna/watchtower-ecr) Forked from [conveos/watchtower-ecr](https://github.com/conveos/watchtower-ecr)
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/ottolini/watchtower-ecr.svg?style=flat-square)](https://hub.docker.com/r/ottolini/watchtower-ecr/)
-[![Docker Stars](https://img.shields.io/docker/stars/ottolini/watchtower-ecr.svg?style=flat-square)](https://hub.docker.com/r/ottolini/watchtower-ecr/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/taufiq14s/watchtower-ecr.svg?style=flat-square)](https://hub.docker.com/r/taufiq14s/watchtower-ecr/)
+[![Docker Stars](https://img.shields.io/docker/stars/taufiq14s/watchtower-ecr.svg?style=flat-square)](https://hub.docker.com/r/taufiq14s/watchtower-ecr/)
 
 ## Usage
 Run the container with the following command:
@@ -10,25 +11,17 @@ Run the container with the following command:
 docker run -d \
   --name watchtower \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -e "AWS_ACCESS_KEY_ID=<ACCESS_KEY_ID>" \
-  -e "AWS_SECRET_ACCESS_KEY=<SECRET_ACCESS_KEY>" \
-  ottolini/watchtower-ecr:latest --interval 300 --cleanup
+  -e "AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>" \
+  -e "AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>" \
+  -e "AWS_REGION=<AWS_REGION>"
+  taufiq14s/watchtower-ecr:latest --interval 300 --cleanup
 ```
 
-If you prefer, you can use the docker-compose.yml
+If you prefer, you can use the [docker-compose.yml file](./docker-compose.yml) then update your .env file
 ```bash
-version: '3.6'
-services:
-  my-service:
-    image: <id>.dkr.ecr.<region>.amazonaws.com/my-image:latest
-  watchtower:
-    image: ottolini/watchtower-ecr:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      AWS_ACCESS_KEY_ID: <ACCESS_KEY_ID>
-      AWS_SECRET_ACCESS_KEY: <SECRET_ACCESS_KEY>
-    command: --interval 300 --cleanup
+cp .env.example .env
+nano .env
+docker-compose up -d
 ```
 
 Both the single `docker run` and `docker-compose` can have the default config.json overridden to use a different authentication method for ECR. Refer to https://github.com/awslabs/amazon-ecr-credential-helper#aws-credentials for more info about it.

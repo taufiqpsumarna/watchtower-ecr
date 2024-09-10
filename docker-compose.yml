@@ -1,0 +1,13 @@
+---
+version: '3.9'
+services:
+  my-service:
+    image: <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/my-image:latest
+  watchtower:
+    image: taufiq14s/watchtower-ecr:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker/config.json:/config.json
+    env_file:
+      - .env
+    command: --interval 300 --cleanup
