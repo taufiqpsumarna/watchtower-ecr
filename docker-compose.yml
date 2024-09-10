@@ -7,5 +7,6 @@ services:
     image: taufiq14s/watchtower-ecr:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.aws:/.aws #AWS CLI Config
     env_file:
       - .env
