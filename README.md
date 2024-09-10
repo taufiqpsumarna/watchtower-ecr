@@ -48,7 +48,14 @@ nano .env
 docker-compose up -d
 ```
 
-Both the single `docker run` and `docker-compose` can have the default config.json overridden to use a different authentication method for ECR. Refer to https://github.com/awslabs/amazon-ecr-credential-helper#aws-credentials for more info about it.
-What you need to add is a new volume that map an existing config.json over the default one:
+Both the single `docker run` and `docker-compose` can have the default ```config.json``` overridden to use a different authentication method for ECR. 
+Refer to https://github.com/awslabs/amazon-ecr-credential-helper#aws-credentials for more info about it.
 
-      - /path/to/docker-config.json:/config.json
+What you need to add is a new volume that map an existing ```config.json``` over the default one in [docker-compose.yml file](./docker-compose.yml)
+```yaml
+...
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /path/to/docker-config.json:/config.json #overide default config.json
+...
+```
